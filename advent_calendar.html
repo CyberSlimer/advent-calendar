@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mommy's Advent Calendar</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        background: url('Christmas Background.png') center/cover no-repeat fixed;
+    }
+    h1 {
+        margin-top: 0px;
+        font-size: 40px;
+        font-weight: bold;
+        background: linear-gradient(90deg, #c20000, #0f7a0f, #c20000);
+        -webkit-background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 14px rgba(200,0,0,0.6);
+        position: relative;
+        z-index: 5;
+    }
+    p {
+        margin-top: -5px;
+        color: #b30000;
+        font-weight: bold;
+        text-shadow: 0 0 6px rgba(255,200,200,0.6);
+        margin-bottom: 20px;
+    }
+    .calendar {
+        position: relative;
+        width: 700px;
+        margin: 0 auto;
+        margin-top: 90px;
+        z-index: 99; /* FIXED */
+    }
+    .tree {
+        width: 0;
+        height: 0;
+        border-left: 250px solid transparent;
+        border-right: 250px solid transparent;
+        border-bottom: 500px solid #1fa341;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+    
+.star {
+    width: 70px;
+    height: 70px;
+    background: gold;
+    clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
+    position: absolute;
+    top: -55px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    color: black;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: star-glow 2s ease-in-out infinite alternate;
+    text-decoration: none;
+}
+
+    .star::after {
+        content: "";
+        position: absolute;
+        inset: -45px;
+        background: radial-gradient(circle,
+            rgba(255,215,0,1) 0%,
+            rgba(255,215,0,0.6) 40%,
+            rgba(255,215,0,0) 85%
+        );
+        filter: blur(20px);
+        z-index: 3;
+        animation: star-pulse 1.2s ease-in-out infinite alternate;
+    }
+
+    .star::before {
+        content: "";
+        position: absolute;
+        inset: -120px;
+        background: radial-gradient(circle,
+            rgba(255,215,0,0.6) 0%,
+            rgba(255,215,0,0.35) 40%,
+            rgba(255,215,0,0) 90%
+        );
+        filter: blur(60px);
+        z-index: 0;
+        animation: star-pulse 1.8s ease-in-out infinite alternate;
+    }
+@keyframes star-pulse {
+        from { transform: scale(1); opacity: 0.8; }
+        to { transform: scale(1.25); opacity: 1; }
+    }
+  
+
+@keyframes star-glow {
+    from { box-shadow: 0 0 10px 4px rgba(255, 215, 0, 0.6), 0 0 20px 10px rgba(255, 215, 0, 0.4); }
+    to   { box-shadow: 0 0 18px 9px rgba(255, 215, 0, 0.9), 0 0 30px 15px rgba(255, 215, 0, 0.7); }
+}
+    
+
+
+
+
+
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .modal-content {
+        background: white;
+        padding: 20px;
+        width: 350px;
+        border-radius: 10px;
+        text-align: left;
+    }
+    .modal-close {
+        float: right;
+        cursor: pointer;
+        font-size: 24px;
+    }
+.trunk {
+        width: 100px;
+        height: 95px;
+        background: #8B4513;
+        margin: 0 auto;
+        position: relative;
+        top: -10px;
+        z-index: 0;
+    }
+
+
+    .present-group-1 {
+        top: 520px;
+        left: 120px;
+    }
+
+    .present-group-2 {
+        top: 520px;
+        right: 120px;
+    }
+
+.snow {
+        pointer-events:none;
+        position: fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        z-index: 0;
+        background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><text x='0' y='15' font-size='20' fill='white'>❄</text></svg>");
+        background-size:25px;
+        animation:snow 18s linear infinite;
+        opacity:0.15;
+        /* keep snow off the tree area */
+        
+    }
+
+    @keyframes snow {
+        0% { background-position: 0px 0px, 0px 0px, 0px 0px; }
+        100% { background-position: 500px 1000px, 300px 600px, 200px 400px; }
+    }
+
+.ornament {
+        width: 50px;
+        height: 50px;
+        background: red;
+        border: 3px solid white;
+        border-radius: 50%;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 5;
+        text-decoration: none;
+    }
+
+    .present {
+        width: 60px;
+        height: 40px;
+        background: #1fa341;
+        border: 3px solid #0f5a1f;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 5;
+        text-decoration: none;
+    }
+
+@keyframes popup-fade {
+        0% { opacity:0; transform: scale(0.85); }
+        100% { opacity:1; transform: scale(1); }
+    }
+
+    /* Mark ornaments and presents as 'opened' after click */
+    .ornament:visited {
+        background: #555 !important;
+        color: #ccc !important;
+        opacity: 0.55 !important;
+    }
+    .present:visited {
+        background: #3a6b3a !important;
+        color: #ccc !important;
+        opacity: 0.55 !important;
+    }
+</style>
+</head>
+<body>
+
+<div class="snow"></div>
+
+<h1>Mommy's Advent Calendar</h1>
+<p id="countdown">Loading countdown...</p>
+<script>
+function updateCountdown(){
+  const now=new Date();
+  const christmas=new Date(now.getFullYear(),11,25);
+  const diff=christmas-now;
+  if(diff<=0){document.getElementById("countdown").innerText="Merry Christmas!";return;}
+  const days=Math.floor(diff/86400000);
+  const hours=Math.floor((diff%86400000)/3600000);
+  const mins=Math.floor((diff%3600000)/60000);
+  document.getElementById("countdown").innerText = days+" days "+hours+" hrs "+mins+" mins until Christmas";
+}
+updateCountdown();
+setInterval(updateCountdown,60000);
+</script>
+
+<div class="calendar">
+    <a href="#day25" class="star day">25</a>
+    <div class="tree"></div>
+    <div class="trunk"></div>
+
+    <!-- Restored Ornaments (Aligned to Tree Edges) -->
+    <a href="#day1" class="ornament" style="top:50px; left:325px;">1</a>
+    <a href="#day2" class="ornament" style="top:125px; left:327.5px;">2</a>
+
+    <a href="#day3" class="ornament" style="top:200px; left:295px;">3</a>
+    <a href="#day4" class="ornament" style="top:200px; left:365px;">4</a>
+
+    <a href="#day5" class="ornament" style="top:275px; left:250px;">5</a>
+    <a href="#day6" class="ornament" style="top:275px; left:330px;">6</a>
+    <a href="#day7" class="ornament" style="top:275px; left:410px;">7</a>
+
+    <a href="#day8" class="ornament" style="top:350px; left:220px;">8</a>
+    <a href="#day9" class="ornament" style="top:350px; left:300px;">9</a>
+    <a href="#day10" class="ornament" style="top:350px; left:380px;">10</a>
+    <a href="#day11" class="ornament" style="top:350px; left:460px;">11</a>
+
+    <a href="#day12" class="ornament" style="top:425px; left:180px;">12</a>
+    <a href="#day13" class="ornament" style="top:425px; left:260px;">13</a>
+    <a href="#day14" class="ornament" style="top:425px; left:340px;">14</a>
+    <a href="#day15" class="ornament" style="top:425px; left:420px;">15</a>
+    <a href="#day16" class="ornament" style="top:425px; left:500px;">16</a>
+
+    <!-- Restored Presents (Aligned Around Tree Base) -->
+    <a href="#day17" class="present" style="top:540px; left:70px;">17</a>
+    <a href="#day18" class="present" style="top:540px; left:170px;">18</a>
+    <a href="#day19" class="present" style="top:540px; left:270px;">19</a>
+    <a href="#day20" class="present" style="top:540px; left:370px;">20</a>
+
+    <a href="#day21" class="present" style="top:540px; left:470px;">21</a>
+    <a href="#day22" class="present" style="top:540px; left:570px;">22</a>
+    <a href="#day23" class="present" style="top:490px; left:200px;">23</a>
+    <a href="#day24" class="present" style="top:490px; left:425px;">24</a>
+  
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+<!-- Pure CSS Modals -->
+<style>
+.modal-box { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; }
+.modal-box:target { display:flex; justify-content:center; align-items:center; }
+.modal-inner {
+    background:white;
+    padding:20px;
+    width:350px;
+    border-radius:10px;
+    text-align:left;
+    animation: popup-fade 0.4s ease-out;
+}
+.close-btn { float:right; font-size:24px; text-decoration:none; }
+</style>
+
+<!-- CLEAN REGENERATED MODALS -->
+<div id="day1" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 1</h2><h3 style="margin-top:-10px; color:#888;">December 1</h3><p>“I carry your heart with me (I carry it in my heart)” — E.E. Cummings</p></div></div>
+<div id="day2" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 2</h2><h3 style="margin-top:-10px; color:#888;">December 2</h3><p>“How do I love thee? Let me count the ways.” — Elizabeth Barrett Browning</p></div></div>
+<div id="day3" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 3</h2><h3 style="margin-top:-10px; color:#888;">December 3</h3><p>“My love is like a red, red rose.” — Robert Burns</p></div></div>
+<div id="day4" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 4</h2><h3 style="margin-top:-10px; color:#888;">December 4</h3><p>“Grow old along with me; the best is yet to be.” — Robert Browning</p></div></div>
+<div id="day5" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 5</h2><h3 style="margin-top:-10px; color:#888;">December 5</h3><p>“Whatever our souls are made of, his and mine are the same.” — Emily Brontë</p></div></div>
+<div id="day6" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 6</h2><h3 style="margin-top:-10px; color:#888;">December 6</h3><p>A soft winter night, your hand in mine — love warmer than any fire.</p></div></div>
+<div id="day7" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 7</h2><h3 style="margin-top:-10px; color:#888;">December 7</h3><p>“At the touch of love, everyone becomes a poet.” — Plato</p></div></div>
+<div id="day8" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 8</h2><h3 style="margin-top:-10px; color:#888;">December 8</h3><p>“You are my sun, my moon, and all my stars.” — E.E. Cummings</p></div></div>
+<div id="day9" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 9</h2><h3 style="margin-top:-10px; color:#888;">December 9</h3><p>“In all the world, there is no heart for me like yours.” — Maya Angelou</p></div></div>
+<div id="day10" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 10</h2><h3 style="margin-top:-10px; color:#888;">December 10</h3><p>Snow falls gentle — but never as softly as you sleep beside me.</p></div></div>
+<div id="day11" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 11</h2><h3 style="margin-top:-10px; color:#888;">December 11</h3><p>“Love is composed of a single soul inhabiting two bodies.” — Aristotle</p></div></div>
+<div id="day12" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 12</h2><h3 style="margin-top:-10px; color:#888;">December 12</h3><p>“Whatever you are, be a good one.” — Abraham Lincoln</p></div></div>
+<div id="day13" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 13</h2><h3 style="margin-top:-10px; color:#888;">December 13</h3><p>“She walks in beauty, like the night.” — Lord Byron</p></div></div>
+<div id="day14" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 14</h2><h3 style="margin-top:-10px; color:#888;">December 14</h3><p>Your laugh is the ribbon that ties my days together.</p></div></div>
+<div id="day15" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 15</h2><h3 style="margin-top:-10px; color:#888;">December 15</h3><p>“If I know what love is, it is because of you.” — Hermann Hesse</p></div></div>
+<div id="day16" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 16</h2><h3 style="margin-top:-10px; color:#888;">December 16</h3><p>“We loved with a love that was more than love.” — Edgar Allan Poe</p></div></div>
+<div id="day17" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 17</h2><h3 style="margin-top:-10px; color:#888;">December 17</h3><p>A cozy home, lights glowing warm — because you’re in it.</p></div></div>
+<div id="day18" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 18</h2><h3 style="margin-top:-10px; color:#888;">December 18</h3><p>“You are my heart, my life, my one and only thought.” — Arthur Conan Doyle</p></div></div>
+<div id="day19" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 19</h2><h3 style="margin-top:-10px; color:#888;">December 19</h3><p>“’Twas the night before Christmas…” — Clement Clarke Moore</p></div></div>
+<div id="day20" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 20</h2><h3 style="margin-top:-10px; color:#888;">December 20</h3><p>Hot cocoa, cold nights, your head on my shoulder — perfect.</p></div></div>
+<div id="day21" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 21</h2><h3 style="margin-top:-10px; color:#888;">December 21</h3><p>“The best thing to hold onto in life is each other.” — Audrey Hepburn</p></div></div>
+<div id="day22" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 22</h2><h3 style="margin-top:-10px; color:#888;">December 22</h3><p>The world is loud — but loving you is quiet magic.</p></div></div>
+<div id="day23" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 23</h2><h3 style="margin-top:-10px; color:#888;">December 23</h3><p>“Love recognizes no barriers.” — Maya Angelou</p></div></div>
+<div id="day24" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 24</h2><h3 style="margin-top:-10px; color:#888;">December 24</h3><p>Silent night, warm heart — Christmas is almost here.</p></div></div>
+<div id="day25" class="modal-box"><div class="modal-inner"><a href="#" class="close-btn">&times;</a><h2>Day 25</h2><h3 style="margin-top:-10px; color:#888;">December 25</h3><p><img src="Christmas Background.png" style="width:100%; border-radius:8px;"><br>Merry Christmas, my love.</p></div></div>
+</body>
